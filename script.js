@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     function swapImages(img1, img2) {
-        const tempBackground = img1.style.backgroundImage;
+        const tempBackground = window.getComputedStyle(img1).backgroundImage;
         const tempId = img1.id;
 
-        img1.style.backgroundImage = img2.style.backgroundImage;
+        img1.style.backgroundImage = window.getComputedStyle(img2).backgroundImage;
         img1.id = img2.id;
 
         img2.style.backgroundImage = tempBackground;
