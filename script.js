@@ -1,52 +1,35 @@
 const divs = document.querySelectorAll('.image');
-let draggedDiv = null;
+let draggedDiv = null; // The div being dragged
 
-divs.forEach(function(div) {
+divs.forEach(function (div) {
   // When drag starts
-  div.addEventListener('dragstart', function(e) {
-    draggedDiv = this;  // Store reference to the dragged element
+  div.addEventListener('dragstart', function (e) {
+    draggedDiv = this; // Store reference to the dragged div
     e.dataTransfer.effectAllowed = 'move';
-    this.classList.add('selected');  // Add visual cue for selected item
+    this.classList.add('selected'); // Optional: Highlight the selected div
   });
 
-  // Allow the drop action by preventing the default handling of dragover
-  div.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+  // Allow dropping
+  div.addEventListener('dragover', function (e) {
+    e.preventDefault(); // This is necessary to allow a drop
   });
 
-  // Add visual cue when drag enters a droppable element
-  div.addEventListener('dragenter', function(e) {
-    this.classList.add('over');
-  });
-
-  // Remove visual cue when drag leaves a droppable element
-  div.addEventListener('dragleave', function(e) {
-    this.classList.remove('over');
-  });
-
-  // Handle the drop event
-  div.addEventListener('drop', function(e) {
+  // Handle drop
+  div.addEventListener('drop', function (e) {
     e.preventDefault();
 
-    // Ensure the dragged element is not dropped on itself
     if (draggedDiv !== this) {
-      // Swap the background image of the dragged element and the drop target
-      const draggedImage = draggedDiv.style.backgroundImage;
-      const targetImage = this.style.backgroundImage;
-
-      // Swap the background images between the two divs
-      draggedDiv.style.backgroundImage = targetImage;
-      this.style.backgroundImage = draggedImage;
+      // Swap the background images of the dragged div and the drop target
+      const tempBg = draggedDiv.style.backgroundImage;
+      draggedDiv.style.backgroundImage = this.style.backgroundImage;
+      this.style.backgroundImage = tempBg;
     }
-
-    return false;
   });
 
   // Cleanup after drag ends
-  div.addEventListener('dragend', function(e) {
+  div.addEventListener('dragend', function () {
     divs.forEach(div => {
-      div.classList.remove('selected', 'over');  // Remove all visual cues
+      div.classList.remove('selected'); // Remove visual highlight
     });
   });
 });
