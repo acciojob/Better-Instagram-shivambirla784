@@ -40,10 +40,6 @@
   margin: 20px;
 }
 
-div.container {
-  border: 5px solid #555;
-}
-
 .flex {
   display: flex;
   justify-content: center;
@@ -52,12 +48,4 @@ div.container {
 
 .selected {
   border: 5px solid rgb(0, 195, 255);
-}
-
-p {
-  text-align: center;
-}
-
-button {
-  margin: 20px;
 }
