@@ -1,35 +1,35 @@
-const divs = document.querySelectorAll('.image');
-let draggedDiv = null; // The div being dragged
+document.addEventListener('DOMContentLoaded', (event) => {
+    const parent = document.getElementById('parent');
+    let draggedItem = null;
 
-divs.forEach(function (div) {
-  // When drag starts
-  div.addEventListener('dragstart', function (e) {
-    draggedDiv = this; // Store reference to the dragged div
-    e.dataTransfer.effectAllowed = 'move';
-    this.classList.add('selected'); // Optional: Highlight the selected div
-  });
-
-  // Allow dropping
-  div.addEventListener('dragover', function (e) {
-    e.preventDefault(); // This is necessary to allow a drop
-  });
-
-  // Handle drop
-  div.addEventListener('drop', function (e) {
-    e.preventDefault();
-
-    if (draggedDiv !== this) {
-      // Swap the background images of the dragged div and the drop target
-      const tempBg = draggedDiv.style.backgroundImage;
-      draggedDiv.style.backgroundImage = this.style.backgroundImage;
-      this.style.backgroundImage = tempBg;
-    }
-  });
-
-  // Cleanup after drag ends
-  div.addEventListener('dragend', function () {
-    divs.forEach(div => {
-      div.classList.remove('selected'); // Remove visual highlight
+    parent.addEventListener('dragstart', (e) => {
+        draggedItem = e.target;
+        e.target.classList.add('selected');
     });
-  });
+
+    parent.addEventListener('dragend', (e) => {
+        e.target.classList.remove('selected');
+    });
+
+    parent.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    parent.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains('image') && e.target !== draggedItem) {
+            swapImages(draggedItem, e.target);
+        }
+    });
+
+    function swapImages(img1, img2) {
+        const tempBackground = img1.style.backgroundImage;
+        const tempId = img1.id;
+
+        img1.style.backgroundImage = img2.style.backgroundImage;
+        img1.id = img2.id;
+
+        img2.style.backgroundImage = tempBackground;
+        img2.id = tempId;
+    }
 });
